@@ -5,7 +5,6 @@ const storageTweaks = {
     cb(null, constants.photoFolder)
   },
   filename: function (req, file, cb) {
-    console.log(file)
     const uniqueSuffix = Date.now();
     cb(null, file.originalname)
   }

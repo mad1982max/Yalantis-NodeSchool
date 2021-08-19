@@ -10,8 +10,7 @@ const upload = multer({ storage })
 const router = express.Router();
 
 router.use((req, res, next) => {
-  const { query, path } = req;
-  console.log({ query, path });
+  console.log('some log:', { path: req.path, date: new Date() });
   next();
 })
 
@@ -19,7 +18,8 @@ router.get('/', (req, res) => {
   res.send('path: /');
 })
 
-router.post('/register', validator, upload.single("photo"), (req, res, next) => {
+router.post('/register', upload.single("photo"), validator.form, validator.result, (req, res, next) => {
+
   const filename = req.file.filename;
   res.send({ ...req.body, photo: filename })
 })
