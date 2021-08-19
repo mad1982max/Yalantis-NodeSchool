@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const validator = require('./validation');
-var uuid = require('uuid');
+const validator = require('./middleware/validator');
+const controller = require('./controllers/register');
 const storageTweaks = require('./storage');
 
 const storage = multer.diskStorage(storageTweaks)
@@ -18,11 +18,9 @@ router.get('/', (req, res) => {
   res.send('path: /');
 })
 
-router.post('/register', upload.single("photo"), validator.form, validator.result, (req, res, next) => {
+router.post('/register', upload.single("photo"), validator.form, validator.result, controller.register)
 
-  const filename = req.file.filename;
-  res.send({ ...req.body, photo: filename })
-})
+router.get('/getById', upload.single("photo"), validator.id, validator.result, controller.getById)
 
 router.get('*', (req, res) => {
   res.send('path: error');
