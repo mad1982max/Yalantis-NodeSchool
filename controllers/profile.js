@@ -3,6 +3,7 @@ const profilesDB = require('../db');
 const fs = require('fs');
 const MyErrors = require('../helpers/handleError');
 const constants = require('../constants');
+const path = require('path')
 
 const controller = {
   register: (req, res, next) => {
@@ -11,7 +12,7 @@ const controller = {
     const userInDB = profilesDB.find(user => user.email === email);
 
     if (userInDB) {
-      fs.unlink(constants.photoFolder + "/" + req.fileName, (err, stats) => {
+      fs.unlink('./' + constants.photoFolder + "/" + req.fileName, (err, stats) => {
         if (err) throw new Error('error while deleting file');
         console.log('file was deleted');
       })
@@ -57,18 +58,13 @@ const controller = {
       return
     }
 
-    fs.readFile(constants.photoFolder + "/" + profile.photoUrl, (err, data) => {
+    res.sendFile(profile.photoUrl, { root: './' + constants.photoFolder }, (err) => {
       if (err) {
         next(new MyErrors(500, 'Server Error', 'Error while reading file'))
-        return
-      };
-
-      const answer = {
-        status: 200,
-        photoData: data
+      } else {
+        console.log('Sent:', profile.photoUrl)
       }
-      res.send(answer)
-    });
+    })
   },
 
   getAll: (req, res, next) => {

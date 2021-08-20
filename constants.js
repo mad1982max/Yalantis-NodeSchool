@@ -1,5 +1,5 @@
 const constants = {
-  photoFolder: "./profile-photos",
+  photoFolder: "profile-photos",
 }
 
 module.exports = constants;
