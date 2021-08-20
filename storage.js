@@ -1,11 +1,15 @@
 const constants = require('./constants');
+const uuid = require('uuid');
 
 const storageTweaks = {
   destination: function (req, file, cb) {
     cb(null, constants.photoFolder)
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname)
+    const photoId = uuid.v1();
+    const fileExt = file.originalname.split('.')[1] || ""
+    const fileName = photoId + (fileExt ? "." + fileExt : "")
+    cb(null, fileName)
   }
 }
 

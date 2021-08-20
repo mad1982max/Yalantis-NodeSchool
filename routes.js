@@ -20,8 +20,9 @@ router.get('/', (req, res) => {
 })
 
 router.post('/register', upload.single("photo"), validator.form, validator.result, controller.register);
-
-router.get('/getById', validator.id, validator.result, controller.getById);
+router.get('/getProfileById', validator.id, validator.result, controller.getProfileById);
+router.get('/getPhotoById', validator.id, validator.result, controller.getPhotoById);
+router.get('/getAll', controller.getAll);
 
 module.exports = router;
 

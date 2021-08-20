@@ -1,5 +1,6 @@
 const uuid = require('uuid');
 const profilesDB = require('../db');
+const fs = require('fs');
 const MyErrors = require('../helpers/handleError')
 
 const controller = {
@@ -27,7 +28,7 @@ const controller = {
     res.send(answer)
   },
 
-  getById: (req, res, next) => {
+  getProfileById: (req, res, next) => {
     const { id } = req.body;
 
     const profile = profilesDB.find(user => user.id === id);
@@ -44,8 +45,35 @@ const controller = {
     res.send(answer)
   },
 
-  getAll: (req, res, next) => {
+  getPhotoById: (req, res, next) => {
+    const { id } = req.body;
 
+    const profile = profilesDB.find(user => user.id === id);
+
+    if (!profile) {
+      next(new MyErrors(400, 'Bad request', 'profile with such id doesn\'t exist'))
+      return
+    }
+
+    readFile('/etc/passwd', (err, data) => {
+      if (err) throw err;
+      console.log(data);
+
+      const answer = {
+        status: 200,
+        profile
+      }
+      res.send(answer)
+    });
+
+  },
+
+  getAll: (req, res, next) => {
+    const answer = {
+      status: 200,
+      profiles: profilesDB
+    }
+    res.send(answer)
   }
 }
 
