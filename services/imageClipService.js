@@ -22,6 +22,7 @@ const imageClipService = (req, res, next) => {
         return;
       }
       console.log('--file was saved');
+      req.fileName = fileName;
       next();
     })
 }
