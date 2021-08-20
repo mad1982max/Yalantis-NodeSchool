@@ -1,3 +1,3 @@
-const profilesDB = [];
+const profiles = [];
 
-module.exports = profilesDB;
+module.exports = profiles;

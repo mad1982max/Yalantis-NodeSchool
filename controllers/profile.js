@@ -1,18 +1,18 @@
 const uuid = require('uuid');
-const profilesDB = require('../db');
 const fs = require('fs');
+const profiles = require('../db');
 const MyErrors = require('../helpers/handleError');
 const constants = require('../constants');
-const path = require('path')
 
 const controller = {
   register: (req, res, next) => {
 
-    const { email, name, surname } = req.body;
-    const userInDB = profilesDB.find(user => user.email === email);
+    const { email } = req.body;
+    const userInDB = profiles.find(user => user.email === email);
 
     if (userInDB) {
-      fs.unlink('./' + constants.photoFolder + "/" + req.fileName, (err, stats) => {
+      const pathToFile = './' + constants.photoFolder + "/" + req.fileName
+      fs.unlink(pathToFile, (err, stats) => {
         if (err) throw new Error('error while deleting file');
         console.log('file was deleted');
       })
@@ -22,9 +22,10 @@ const controller = {
 
     const profile = {
       id: uuid.v1(),
-      ...req.body, photoUrl: req.file.filename
+      ...req.body,
+      photoUrl: req.fileName
     }
-    profilesDB.push(profile)
+    profiles.push(profile)
 
     const answer = {
       status: 200,
@@ -35,7 +36,7 @@ const controller = {
 
   getProfileById: (req, res, next) => {
     const { id } = req.body;
-    const profile = profilesDB.find(user => user.id === id);
+    const profile = profiles.find(user => user.id === id);
 
     if (!profile) {
       next(new MyErrors(400, 'Bad request', 'profile with such id doesn\'t exist'))
@@ -44,14 +45,14 @@ const controller = {
 
     const answer = {
       status: 200,
-      ...profile,
+      profile,
     }
     res.send(answer)
   },
 
   getPhotoById: (req, res, next) => {
     const { id } = req.body;
-    const profile = profilesDB.find(user => user.id === id);
+    const profile = profiles.find(user => user.id === id);
 
     if (!profile) {
       next(new MyErrors(400, 'Bad request', 'profile with such id doesn\'t exist'))
@@ -70,7 +71,7 @@ const controller = {
   getAll: (req, res, next) => {
     const answer = {
       status: 200,
-      profiles: profilesDB
+      profiles
     }
     res.send(answer)
   }
