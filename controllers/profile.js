@@ -10,7 +10,8 @@ const controller = {
     const userInDB = profilesDB.find(user => user.email === email);
 
     if (userInDB) {
-      next(new MyErrors(400, 'Bad request', 'profile with such email is exists'))
+      next(new MyErrors(400, 'Bad request', 'profile with such email is exists'));
+      return;
     }
 
     const profile = {
@@ -33,6 +34,7 @@ const controller = {
 
     if (!profile) {
       next(new MyErrors(400, 'Bad request', 'profile with such id doesn\'t exist'))
+      return
     }
 
     const answer = {
@@ -40,6 +42,10 @@ const controller = {
       profile
     }
     res.send(answer)
+  },
+
+  getAll: (req, res, next) => {
+
   }
 }
 
