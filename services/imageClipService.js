@@ -7,10 +7,10 @@ const imageClipService = (req, res, next) => {
 
   if (!req.file || !req.file.originalname) {
     next(new MyErrors(400, 'Bad request', 'Img is required'));
-    return
+    return;
   }
   const photoId = uuid.v1();
-  const fileExt = req.file.originalname.split('.')[1] || ""
+  const fileExt = req.file.originalname.split('.')[1] || "";
   const fileName = photoId + (fileExt ? "." + fileExt : "");
   const filePath = './' + constants.photoFolder + '/' + fileName;
 
@@ -19,13 +19,11 @@ const imageClipService = (req, res, next) => {
     .toFile(filePath, (err, info) => {
       if (err) {
         next(new MyErrors(500, 'Server error', 'can\'t save the file'));
-        return
+        return;
       }
-      console.log('file was saved')
-      req.fileName = fileName;
-      next()
+      console.log('--file was saved');
+      next();
     })
-
 }
 
-module.exports = imageClipService
+module.exports = imageClipService;

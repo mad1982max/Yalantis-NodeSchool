@@ -11,10 +11,10 @@ const controller = {
     const userInDB = profiles.find(user => user.email === email);
 
     if (userInDB) {
-      const pathToFile = './' + constants.photoFolder + "/" + req.fileName
+      const pathToFile = './' + constants.photoFolder + "/" + req.fileName;
       fs.unlink(pathToFile, (err, stats) => {
         if (err) throw new Error('error while deleting file');
-        console.log('file was deleted');
+        console.log('--file was deleted');
       })
       next(new MyErrors(400, 'Bad request', 'profile with such email is exists'));
       return;
@@ -24,14 +24,14 @@ const controller = {
       id: uuid.v1(),
       ...req.body,
       photoUrl: req.fileName
-    }
-    profiles.push(profile)
+    };
+    profiles.push(profile);
 
     const answer = {
       status: 200,
       message: `profile with id: ${profile.id} is saved`
-    }
-    res.send(answer)
+    };
+    res.send(answer);
   },
 
   getProfileById: (req, res, next) => {
@@ -39,15 +39,15 @@ const controller = {
     const profile = profiles.find(user => user.id === id);
 
     if (!profile) {
-      next(new MyErrors(400, 'Bad request', 'profile with such id doesn\'t exist'))
-      return
+      next(new MyErrors(400, 'Bad request', 'profile with such id doesn\'t exist'));
+      return;
     }
 
     const answer = {
       status: 200,
       profile,
-    }
-    res.send(answer)
+    };
+    res.send(answer);
   },
 
   getPhotoById: (req, res, next) => {
@@ -56,14 +56,14 @@ const controller = {
 
     if (!profile) {
       next(new MyErrors(400, 'Bad request', 'profile with such id doesn\'t exist'))
-      return
+      return;
     }
 
     res.sendFile(profile.photoUrl, { root: './' + constants.photoFolder }, (err) => {
       if (err) {
         next(new MyErrors(500, 'Server Error', 'Error while reading file'))
       } else {
-        console.log('Sent:', profile.photoUrl)
+        console.log('--file was sent')
       }
     })
   },
