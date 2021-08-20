@@ -16,5 +16,4 @@ class MyErrors extends Error {
     );
   }
 }
-
 module.exports = MyErrors;

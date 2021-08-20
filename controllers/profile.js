@@ -8,7 +8,6 @@ const controller = {
   register: (req, res, next) => {
 
     const { email, name, surname } = req.body;
-
     const userInDB = profilesDB.find(user => user.email === email);
 
     if (userInDB) {
@@ -35,7 +34,6 @@ const controller = {
 
   getProfileById: (req, res, next) => {
     const { id } = req.body;
-
     const profile = profilesDB.find(user => user.id === id);
 
     if (!profile) {
@@ -52,7 +50,6 @@ const controller = {
 
   getPhotoById: (req, res, next) => {
     const { id } = req.body;
-
     const profile = profilesDB.find(user => user.id === id);
 
     if (!profile) {
@@ -72,7 +69,6 @@ const controller = {
       }
       res.send(answer)
     });
-
   },
 
   getAll: (req, res, next) => {
@@ -83,5 +79,4 @@ const controller = {
     res.send(answer)
   }
 }
-
 module.exports = controller;

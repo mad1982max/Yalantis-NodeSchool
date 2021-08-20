@@ -16,5 +16,5 @@ app.use(MyErrors.error404);
 app.use(MyErrors.errorSend);
 
 app.listen(PORT, () => {
-  console.log(`App listening at http://localhost:${PORT}`)
+  console.log(`app listening at http://localhost:${PORT}`)
 })
