@@ -1,7 +1,8 @@
 const uuid = require('uuid');
 const profilesDB = require('../db');
 const fs = require('fs');
-const MyErrors = require('../helpers/handleError')
+const MyErrors = require('../helpers/handleError');
+const constants = require('../constants');
 
 const controller = {
   register: (req, res, next) => {
@@ -11,13 +12,17 @@ const controller = {
     const userInDB = profilesDB.find(user => user.email === email);
 
     if (userInDB) {
+      fs.unlink(constants.photoFolder + "/" + req.fileName, (err, stats) => {
+        if (err) throw new Error('error while deleting file');
+        console.log('file was deleted');
+      })
       next(new MyErrors(400, 'Bad request', 'profile with such email is exists'));
       return;
     }
 
     const profile = {
       id: uuid.v1(),
-      ...req.body, photo: req.file.filename
+      ...req.body, photoUrl: req.file.filename
     }
     profilesDB.push(profile)
 
@@ -40,7 +45,7 @@ const controller = {
 
     const answer = {
       status: 200,
-      profile
+      ...profile,
     }
     res.send(answer)
   },
@@ -55,13 +60,15 @@ const controller = {
       return
     }
 
-    readFile('/etc/passwd', (err, data) => {
-      if (err) throw err;
-      console.log(data);
+    fs.readFile(constants.photoFolder + "/" + profile.photoUrl, (err, data) => {
+      if (err) {
+        next(new MyErrors(500, 'Server Error', 'Error while reading file'))
+        return
+      };
 
       const answer = {
         status: 200,
-        profile
+        photoData: data
       }
       res.send(answer)
     });

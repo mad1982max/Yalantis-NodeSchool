@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const routesHandler = require('./routes');
+const profileRoutes = require('./routes');
 const MyErrors = require('./helpers/handleError')
 
 const app = express();
@@ -11,7 +11,7 @@ app.use(express.urlencoded({
 
 const PORT = process.env.PORT || 3000;
 
-app.use('/profile', routesHandler)
+app.use('/profile', profileRoutes)
 app.use(MyErrors.error404);
 app.use(MyErrors.errorSend);
 

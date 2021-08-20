@@ -8,7 +8,8 @@ const storageTweaks = {
   filename: function (req, file, cb) {
     const photoId = uuid.v1();
     const fileExt = file.originalname.split('.')[1] || ""
-    const fileName = photoId + (fileExt ? "." + fileExt : "")
+    const fileName = photoId + (fileExt ? "." + fileExt : "");
+    req.fileName = fileName;
     cb(null, fileName)
   }
 }
