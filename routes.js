@@ -1,5 +1,4 @@
 const express = require('express');
-
 const validator = require('./middleware/validator');
 const controller = require('./controllers/profile');
 const logger = require('./helpers/logger.js');

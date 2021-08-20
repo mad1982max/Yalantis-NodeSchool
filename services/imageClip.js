@@ -12,10 +12,11 @@ const imageClipService = (req, res, next) => {
   const photoId = uuid.v1();
   const fileExt = req.file.originalname.split('.')[1] || ""
   const fileName = photoId + (fileExt ? "." + fileExt : "");
+  const filePath = './' + constants.photoFolder + '/' + fileName;
 
   sharp(req.file.buffer)
     .resize(...constants.fileDimension)
-    .toFile('./' + constants.photoFolder + '/' + fileName, (err, info) => {
+    .toFile(filePath, (err, info) => {
       if (err) {
         next(new MyErrors(500, 'Server error', 'can\'t save the file'));
         return

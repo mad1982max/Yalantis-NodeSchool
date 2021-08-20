@@ -21,6 +21,7 @@ const upload = multer({
 const fileUploadingService = (req, res, next) => {
   const uploader = upload.single("photo");
   uploader(req, res, (err) => {
+    console.log(req.body)
     if (err instanceof multer.MulterError) {
       next(new MyErrors(500, 'Server error', 'error while uploading'));
       return
